@@ -1,0 +1,5 @@
+%%formFieldsHtml%%
+
+<div class="form-group">
+    <input class="btn btn-primary btn-sm oneTimeSubmit" type="submit" value="{{ $formMode === 'edit' ? __('Update') : __('Save') }}">
+</div>

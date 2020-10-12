@@ -1,0 +1,159 @@
+php artisan db:seed --class=PermissionsSeeder
+
+**slug in Laravel
+
+use Illuminate\Support\Str;
+$slug = Str::slug('Laravel 5 Framework', '-');
+
+**image save and resize code .....
+use Illuminate\Support\Facades\Storage;
+
+Storage::delete('file.jpg');
+
+if ($request->hasFile('image')) {
+        $data['image'] = $request->file('image')->storeAS('uploads',rand().'-'.$request->file('image')->getClientOriginalName());
+        $setImage = 'storage/'.$data['image'];
+        $img = Image::make($setImage)->resize(500, 500)->save($setImage);
+        Storage::delete(Auth::user()->image);
+    }
+** Select item --------------------------------------------------------
+    <select class="form-control selectric" name="subCategory_id">
+        @foreach (\App\SubCategory::all() as $item)
+        <option value="{{$item->id}}" @if(isset($minicategory->subCategory_id))
+            @if($minicategory->subCategory_id == $item->name) selected @endif
+            @endif>
+            {{$item->name}}
+        </option>
+        @endforeach
+    </select>
+
+** Image upload
+
+        Storage::delete(Category::find($id)->image);
+        Storage::delete($request->oldImage);
+
+
+    <div class="avatar-upload">
+        <div class="avatar-edit">
+            <input type='file' name="image" id="imageUpload" accept=".png, .jpg, .jpeg"
+                onchange="showMyImage(this,'category')"
+                value="{{ isset($category->image) ? $category->image : old('image')}}">
+            <input type='text' name="oldImage" value="{{ isset($category->image) ? $category->image : ''}}" hidden>
+            <label for="imageUpload"></label>
+        </div>
+        <div class="avatar-preview">
+            <img id="category" class="avatar-preview"
+                src="{{ isset($category->image) ? Storage::url($category->image) : asset('assets/img/upload.png')}}"
+                alt="image" />
+        </div>
+    </div>
+
+--------------------------------------------------------------------------
+    table:
+    1.Category -- sub-category : one to maney relationship//hasMany--sub_category
+        1.name
+        2.image
+    2.SubCategory -- mini-category : one to maney relationship//belongsto--category//hasMany--mini_category
+        1.name
+        2.image
+        3.category_id
+    3.MiniCategory -- belongsto--sub-category
+        1.name
+        2.subCategory_id
+    4.Type //hasMany--product
+        1.name
+    5.Brand //hasMany--product
+        1.name
+        2.image
+    6.Size //hasMany--purchaseItem
+        1.name
+    7.Color //hasMany--purchaseItem
+        1.name
+    10.Vat //hasMany--product
+        1.name
+        2.percentage
+    11.Supplier //hasMany--purchase
+        1.name
+        2.address
+        3.phone_number
+        4.total_paid_amount
+        4.total_paid_due
+    12.Product //belongsto--type //belongsto--Brand
+        1.name
+        2.SKU
+        3.category
+        4.sub_category
+        5.mini_category
+        6.type_id
+        
+
+
+    -----------------------------
+    14.PurchaseItem //hasMany--purchase //belongsto--product // belongsto--color //belongsto--size
+        1.product_id
+        3.color_id
+        4.size_id
+        2.quantity
+        5.regular_price
+        6.sale_price
+        6.thumbnail
+        7.image1
+        8.image2
+        9.image3
+        10.brand_id
+        11.Short_description
+        11.long_description
+    15.Purchase  //belongsto--supplier // belongsto--purchaseItem
+        1.purchaseItem_id
+        2.total_price
+        3.supplyer_id
+        4.paid_amount 
+        5.due_amount
+    -----------------------------
+
+    ----------------------------   
+
+
+    ---------------------------------
+    **
+    1.CustomerInfo
+        1.user_id
+        3.phone_number
+        4.region
+        5.city
+        6.area
+        7.address   
+   3.Billing Details
+        1.fname
+        2.sname
+        3.phone_number
+        4.region
+        5.city
+        6.area
+        7.address
+        8.customerInfo_id
+
+    2.Order 
+        1.customer_id
+        2.order_amount
+        3.total_item
+
+        
+    3.OrderItem
+        1.product_id
+        2.product_quantity
+        3.order_id
+
+    4.payment
+        1.user_id
+        2.
+
+
+
+
+
+        offer:
+
+        product_id
+        ending_date_time 
+        offer_percentage

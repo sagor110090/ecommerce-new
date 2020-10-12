@@ -1,0 +1,1 @@
+<input class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="%%itemName%%" type="%%fieldType%%" id="%%itemName%%" value="{{ isset($%%crudNameSingular%%->%%itemName%%) ? $%%crudNameSingular%%->%%itemName%% : old(%%itemName%%)}}"  placeholder="{{ __(%%itemName%%) }}" %%required%%>

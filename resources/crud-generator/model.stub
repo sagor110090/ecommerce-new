@@ -1,0 +1,18 @@
+<?php
+
+namespace DummyNamespace;
+
+use Illuminate\Database\Eloquent\Model;
+{{useSoftDeletes}}
+class DummyClass extends Model
+{
+
+    protected $table = '{{table}}';
+
+    {{primaryKey}}
+
+
+    protected $fillable = {{fillable}};
+
+    {{relationships}}
+}

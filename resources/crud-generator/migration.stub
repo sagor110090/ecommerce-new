@@ -1,0 +1,19 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+
+class DummyClass extends Migration
+{
+  
+    public function up()
+    {
+        {{schema_up}}
+    }
+
+  
+    public function down()
+    {
+        {{schema_down}}
+    }
+}

@@ -1,0 +1,88 @@
+<?php
+
+namespace DummyNamespace;
+
+use DummyRootNamespaceHttp\Requests;
+use DummyRootNamespaceHttp\Controllers\Controller;
+use DummyRootNamespace{{modelNamespace}}{{modelName}};
+use Illuminate\Http\Request;
+use Session;
+use Helper;
+
+class DummyClass extends Controller
+{
+
+     public function index(Request $request)
+    {
+        if (!Helper::authCheck('{{crudName}}-show')) { Session::flash('error','Permission Denied!'); return redirect()->back();}
+        $keyword = $request->get('search');
+        $perPage = {{pagination}};
+
+        if (!empty($keyword)) {
+            ${{crudName}} = {{modelName}}::{{whereSnippet}}latest()->paginate($perPage);
+        } else {
+            ${{crudName}} = {{modelName}}::latest()->paginate($perPage);
+        }
+        Helper::activityStore('Show','{{crudName}}  Show All Record');
+        return view('{{viewPath}}{{viewName}}.index', compact('{{crudName}}'));
+    }
+
+
+    public function create()
+    {
+        if (!Helper::authCheck('{{crudName}}-create')) { Session::flash('error','Permission Denied!'); return redirect()->back();}
+        Helper::activityStore('Create','{{crudName}} Add New button clicked');
+        return view('{{viewPath}}{{viewName}}.create');
+    }
+
+
+    public function store(Request $request)
+    {
+        {{validationRules}}
+        $requestData = $request->all();
+        {{fileSnippet}}
+        {{modelName}}::create($requestData);
+        Session::flash('success','Successfully Saved!');
+        Helper::activityStore('Store','{{crudName}} Record Saved');
+        return redirect('{{routeGroup}}{{viewName}}');
+    }
+
+
+    public function show($id)
+    {
+        ${{crudNameSingular}} = {{modelName}}::findOrFail($id);
+        Helper::activityStore('Store','{{crudName}} Single Record showed');
+        return view('{{viewPath}}{{viewName}}.show', compact('{{crudNameSingular}}'));
+    }
+
+    public function edit($id)
+    {
+        if (!Helper::authCheck('{{crudName}}-edit')) { Session::flash('error','Permission Denied!'); return redirect()->back();}
+        ${{crudNameSingular}} = {{modelName}}::findOrFail($id);
+        Helper::activityStore('Edit','{{crudName}} Edit button clicked');
+        return view('{{viewPath}}{{viewName}}.edit', compact('{{crudNameSingular}}'));
+    }
+
+
+    public function update(Request $request, $id)
+    {
+        {{validationRules}}
+        $requestData = $request->all();
+        {{fileSnippet}}
+        ${{crudNameSingular}} = {{modelName}}::findOrFail($id);
+        ${{crudNameSingular}}->update($requestData);
+        Session::flash('success','Successfully Updated!');
+        Helper::activityStore('Update','{{crudName}} Record Updated');
+        return redirect('{{routeGroup}}{{viewName}}');
+    }
+
+
+    public function destroy($id)
+    {
+        if (!Helper::authCheck('{{crudName}}-delete')) { Session::flash('error','Permission Denied!'); return redirect()->back();}
+        {{modelName}}::destroy($id);
+        Session::flash('success','Successfully Deleted!');
+        Helper::activityStore('Delete','{{crudName}} Delete button clicked');
+        return redirect('{{routeGroup}}{{viewName}}');
+    }
+}
